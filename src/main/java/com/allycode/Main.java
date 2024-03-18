@@ -2,18 +2,51 @@ package com.allycode;
 
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
+import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RestController;
 
+import java.util.ArrayList;
+import java.util.List;
 import java.util.Objects;
 
 @SpringBootApplication
 @RestController
 public class Main {
+
+    private static List<Customer> customers;
+
+    static {
+        customers = new ArrayList<>();
+
+        Customer alex = new Customer(
+                1,
+                "Alex",
+                "alex@gmal.com",
+                21
+
+        );
+
+        customers.add(alex);
+
+        Customer jamila = new Customer(
+                2,
+                "jamila",
+                "jamila@gmal.com",
+                19
+
+        );
+        customers.add(jamila);
+    }
     public static void main(String[] args) {
         SpringApplication.run(Main.class, args);
     }
 
-    class Customer{
+    @GetMapping("api/v1/customers")
+    public List<Customer> getCustomers() {
+        return customers;
+    }
+
+   static class Customer{
         private Integer id;
         private String name;
         private String email;
@@ -27,6 +60,13 @@ public class Main {
             this.age = age;
         }
 
+        public Integer getId(){
+            return id;
+        }
+
+       public void setId() {
+            this.id = id;
+       }
         public String getName() {
             return name;
         }
