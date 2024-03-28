@@ -1,6 +1,7 @@
 package com.allycode.customer;
 
-import com.allycode.exception.ResourceNotFound;
+import com.allycode.exception.DuplicateResourceException;
+import com.allycode.exception.ResourceNotFoundException;
 import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.stereotype.Service;
 
@@ -20,6 +21,29 @@ public class CustomerService {
     }
     public Customer getCustomer(Integer id) {
         return customerDao.selectCustomerById(id)
-                .orElseThrow(() -> new ResourceNotFound("customer not found"));
+                .orElseThrow(() -> new ResourceNotFoundException("customer not found"));
+    }
+
+    public void addCustomer(CustomerRegistrationRequest customerRegistrationRequest) {
+        //Check if email exists
+        String email = customerRegistrationRequest.email();
+        if (customerDao.existsPersonWithEmail(email)) {
+            throw new DuplicateResourceException(
+                    "email already taken"
+            );
+        }
+        Customer customer = new Customer(
+                customerRegistrationRequest.name(),
+                customerRegistrationRequest.email(),
+                customerRegistrationRequest.age()
+
+        );
+        customerDao.insertCustomer(
+                customer
+        );
+    }
+
+    public void removeCustomer(Integer id) {
+//        customerDao.deleteCustomer(id).orElseTh
     }
 }
