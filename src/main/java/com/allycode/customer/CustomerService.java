@@ -43,7 +43,12 @@ public class CustomerService {
         );
     }
 
-    public void removeCustomer(Integer id) {
-//        customerDao.deleteCustomer(id).orElseTh
+    public void deleteCustomerById(Integer customerId) {
+        if (!customerDao.existsPersonWithId(customerId)) {
+            throw new ResourceNotFoundException(
+                    "customer with id [%s] not found".formatted(customerId)
+            );
+        }
+        customerDao.deleteCustomerById(customerId);
     }
 }
