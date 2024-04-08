@@ -18,6 +18,7 @@ public class CustomerController {
     public List<Customer> getCustomers() {
         return customerService.getAllCustomers();
     }
+
     @GetMapping("{customerId}")
     public Customer getCustomer(
             @PathVariable("customerId") Integer customerId
@@ -26,19 +27,26 @@ public class CustomerController {
         return customerService.getCustomer(customerId);
 
     }
+
     @PostMapping()
     public void registerCustomer(@RequestBody CustomerRegistrationRequest request) {
         customerService.addCustomer(request);
     }
+
     @DeleteMapping("{customerId}")
-    public void  deleteCustomer(
+    public void deleteCustomer(
             @PathVariable("customerId") Integer customerId
-    ){
+    ) {
         customerService.deleteCustomerById(customerId);
     }
 
+    @PutMapping("{customerId}")
+    public void deleteCustomer(
+            @PathVariable("customerId") Integer customerId,
+            @RequestBody CustomerUpdateRequest updateRequest
 
+    ){
+        customerService.updateCustomer(customerId, updateRequest);
 
-
-
+    }
 }
